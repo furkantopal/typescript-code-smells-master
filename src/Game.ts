@@ -20,7 +20,7 @@ export class Game {
     if (symbol == this._lastSymbol) {
       throw new Error('Invalid next player');
     }
-    this._board.MarkTile({Symbol:symbol,Coordinate:coordinate});
+    this._board.MarkTile({ Symbol: symbol, Coordinate: coordinate });
     this._lastSymbol = symbol;
   }
 
@@ -33,19 +33,18 @@ export class Game {
     if (boardState.Status !== 'Complete') {
       return Sign.notPlayed;
     }
-    return boardState.CurrentState
+    return boardState.CurrentState;
   }
-
 }
 
 interface Tile {
-  Coordinate:Coordinate
+  Coordinate: Coordinate;
   Symbol: Sign;
 }
 
 interface BoardState {
-  Status:'Complete'| 'InPlay'
-  CurrentState: Sign
+  Status: 'Complete' | 'InPlay';
+  CurrentState: Sign;
 }
 
 class Board {
@@ -54,7 +53,10 @@ class Board {
   constructor() {
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
-        const tile: Tile = { Coordinate: {x: i, y: j}, Symbol: Sign.notPlayed };
+        const tile: Tile = {
+          Coordinate: { x: i, y: j },
+          Symbol: Sign.notPlayed,
+        };
         this._plays.push(tile);
       }
     }
@@ -63,38 +65,49 @@ class Board {
   public getBoardState(): BoardState {
     for (let i = 0; i < 3; i++) {
       if (this.isFirstRowComplete(i) && this.isMiddleRowComplete(i)) {
-        return {Status: 'Complete', CurrentState: this.SymbolAt({x: i, y: 0})!};
+        return {
+          Status: 'Complete',
+          CurrentState: this.SymbolAt({ x: i, y: 0 })!,
+        };
       }
     }
-    return {Status:'InPlay',CurrentState:Sign.notPlayed}
-
+    return { Status: 'InPlay', CurrentState: Sign.notPlayed };
   }
   private isFirstRowComplete(tileX: number): boolean {
     return (
-        this.SymbolAt({x: tileX, y: 0})! != Sign.notPlayed &&
-        this.SymbolAt({x: tileX, y: 1})! != Sign.notPlayed &&
-        this.SymbolAt({x: tileX, y: 2})! != Sign.notPlayed
+      this.SymbolAt({ x: tileX, y: 0 })! != Sign.notPlayed &&
+      this.SymbolAt({ x: tileX, y: 1 })! != Sign.notPlayed &&
+      this.SymbolAt({ x: tileX, y: 2 })! != Sign.notPlayed
     );
   }
 
-  private isBoardPositionPlayed = (coordinate: Coordinate): boolean => this.SymbolAt(coordinate) != Sign.notPlayed;
+  private isBoardPositionPlayed = (coordinate: Coordinate): boolean =>
+    this.SymbolAt(coordinate) != Sign.notPlayed;
 
   private SymbolAt(coordinate: Coordinate): Sign {
-    return this._plays.find((t: Tile) => t.Coordinate.x == coordinate.x && t.Coordinate.y == coordinate.y)!.Symbol;
+    return this._plays.find(
+      (t: Tile) =>
+        t.Coordinate.x == coordinate.x && t.Coordinate.y == coordinate.y
+    )!.Symbol;
   }
 
   public MarkTile(tile: Tile): void {
     if (this.isBoardPositionPlayed(tile.Coordinate)) {
       throw new Error('Invalid position');
     }
-    this._plays.find((t: Tile) => t.Coordinate.x == tile.Coordinate.x && t.Coordinate.y == tile.Coordinate.y)!.Symbol = tile.Symbol;
+    this._plays.find(
+      (t: Tile) =>
+        t.Coordinate.x == tile.Coordinate.x &&
+        t.Coordinate.y == tile.Coordinate.y
+    )!.Symbol = tile.Symbol;
   }
 
-  private isMiddleRowComplete(tileX: number):boolean {
+  private isMiddleRowComplete(tileX: number): boolean {
     return (
-        this.SymbolAt({x: tileX, y: 0})! == this.SymbolAt({x: tileX, y: 1})! &&
-        this.SymbolAt({x: tileX, y: 2})! == this.SymbolAt({x: tileX, y: 1})!
+      this.SymbolAt({ x: tileX, y: 0 })! ==
+        this.SymbolAt({ x: tileX, y: 1 })! &&
+      this.SymbolAt({ x: tileX, y: 2 })! == this.SymbolAt({ x: tileX, y: 1 })!
     );
   }
 }
-//test
+//test2
